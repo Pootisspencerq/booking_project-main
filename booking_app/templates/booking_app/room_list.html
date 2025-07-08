@@ -1,0 +1,26 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Наші кімнати ❤️ ❤️ ❤️</h2>
+    <div class="row">
+        {% for room in rooms %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                {% if room.image %}
+                    <img src="{{ room.image.url }}" class="card-img-top" alt="{{ room.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ room.title }}</h5>
+                    <span class="badge bg-warning text-dark">{{ room.room_type }}</span>
+                    <p class="card-text mt-2">{{ room.description }}</p>
+                    <p class="card-text"><strong>Ціна:</strong> {{ room.price }} ₴</p>
+                    <a href="{% url 'room_detail' room.id %}" class="btn btn-info">Go reserve!</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+
+/* Світла тема (за замовчуванням) */
+body {
+  background-color: #fff;
+  color: #000;
+}
+
+.card,
+.container,
+.navbar,
+.form-control {
+  background-color: #f8f9fa;
+  color: #000;
+}
+
+.btn {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Темна тема */
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.dark-mode .card,
+.dark-mode .container,
+.dark-mode .navbar,
+.dark-mode .form-control {
+  background-color: #1e1e1e !important;
+  color: #fff !important;
+}
+
+.dark-mode .btn {
+  background-color: #333;
+  color: #fff;
+}
