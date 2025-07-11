@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 mb-4">
             <img src="{{ room.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ room.title }}">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 text-light">
             <h2>{{ room.title }}</h2>
             <p>{{ room.description }}</p>
             <p><strong>Тип:</strong> {{ room.type }}</p>
@@ -17,25 +18,55 @@
     {% if user.is_authenticated %}
     <div class="row mt-5">
         <div class="col-md-8 offset-md-2">
-            <div class="card shadow-sm p-4">
+            <div class="card bg-dark text-light shadow-sm p-4 border border-secondary">
                 {% if room_is_booked %}
-<div class="alert alert-danger text-center">
-    Ця кімната вже повністю заброньована на ваші дати.
-</div>
-{% endif %}
+                <div class="alert alert-danger text-center">
+                    Ця кімната вже повністю заброньована на ваші дати.
+                </div>
+                {% endif %}
 
-<h4 class="text-center mb-4">Резервація кімнати</h4>
+                <h4 class="text-center mb-4">Резервація кімнати</h4>
                 <form method="post" action="{% url 'create_booking' room.id %}">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary w-100">Забронювати</button>
+
+                    <div class="mb-3">
+                        <label for="check_in" class="form-label">Дата заїзду</label>
+                        <input type="date" name="check_in" id="check_in"
+                               class="form-control bg-dark text-light border border-secondary" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="check_out" class="form-label">Дата виїзду</label>
+                        <input type="date" name="check_out" id="check_out"
+                               class="form-control bg-dark text-light border border-secondary" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="guests" class="form-label">Кількість гостей</label>
+                        <input type="number" name="guests" id="guests"
+                               class="form-control bg-dark text-light border border-secondary" min="1" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="check_in_time" class="form-label">Час заїзду</label>
+                        <input type="time" name="check_in_time" id="check_in_time"
+                               class="form-control bg-dark text-light border border-secondary">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="check_out_time" class="form-label">Час виїзду</label>
+                        <input type="time" name="check_out_time" id="check_out_time"
+                               class="form-control bg-dark text-light border border-secondary">
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-light w-100 mt-2">Забронювати</button>
                 </form>
             </div>
         </div>
     </div>
     {% else %}
     <div class="alert alert-warning mt-4 text-center">
-        <a href="{% url 'login' %}">Увійдіть</a>, щоб забронювати цю кімнату.
+        <a href="{% url 'login' %}" class="text-warning">Увійдіть</a>, щоб забронювати цю кімнату.
     </div>
     {% endif %}
 </div>
