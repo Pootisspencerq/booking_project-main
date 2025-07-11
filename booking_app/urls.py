@@ -8,9 +8,8 @@ from .views import create_booking, booking_success
 
 urlpatterns = [
     path('booking/<int:room_id>/', create_booking, name='create_booking'),
-
     path('booking/success/', booking_success, name='booking_success'),
-
+    path('resources/', views.resource_list, name='resource_list'),
     path('', views.home, name='home'),
     path('rooms/<int:room_id>/', views.room_detail, name='room_detail'),
     path('rooms/create/', views.create_room, name='create_room'),

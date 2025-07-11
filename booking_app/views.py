@@ -1,10 +1,12 @@
 from datetime import datetime
+from urllib import request
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Room, Booking
 from .forms import RoomForm, RegisterForm, LoginForm, BookingForm
 from django import forms
+from .models import Resource
 
 
 def register_view(request):
@@ -115,6 +117,9 @@ def create_booking(request, room_id):
         'room': room,
         'booked_dates': booked_dates
     })
+def resource_list(request):
+    resources = Resource.objects.all()
+    return render(request, 'resources.html', {'resources': resources})
 
 
 def booking_success(request):

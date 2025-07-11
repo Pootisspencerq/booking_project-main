@@ -38,38 +38,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-    <a class="navbar-brand" href="/">Головна</a>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/rooms/">Номери</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                    Адміністрація
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/admin/">Панель адміністратора</a></li>
-                </ul>
-            </li>
-        </ul>
-        <ul class="navbar-nav ms-auto">
-            {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Вийти</a>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Вхід</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'register' %}">Реєстрація</a>
-                </li>
-            {% endif %}
-        </ul>
-    </div>
-</nav>
+
 
 <div class="container mt-4">
     {% block content %}{% endblock %}

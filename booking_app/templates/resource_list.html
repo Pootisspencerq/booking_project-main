@@ -1,16 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Resources</title>
-</head>
-<body>
-    <h1>Resource List</h1>
-    <ul>
-        {% for resource in resources %}
+{% extends 'base.html' %}
+{% block content %}
+<h1>Список ресурсів</h1>
+<ul>
+    {% for resource in resources %}
         <li>{{ resource.name }} - {{ resource.description }}</li>
-        {% empty %}
-        <li>No resources available.</li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+    {% empty %}
+        <li>Немає доступних ресурсів.</li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<h2>Корисні посилання</h2>
+<ul>
+    <li><a href="mailto:sypennazar@gmail.com">Офіційна документація Django</a></li>
+    <li><a href="mailto:sypennazar@gmail.com">MDN Web Docs</a></li>
+    <li><a href="mailto:sypennazar@gmail.com">Python.org</a></li>
+</ul>
+
+<a href="/">Назад на головну</a>
+{% endblock %}

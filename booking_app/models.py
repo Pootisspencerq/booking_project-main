@@ -25,3 +25,11 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.room.title} ({self.check_in} to {self.check_out})"
+
+
+class Resource(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name

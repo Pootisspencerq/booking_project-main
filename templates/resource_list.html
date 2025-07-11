@@ -1,16 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Resources</title>
-</head>
-<body>
-    <h1>Resource List</h1>
-    <ul>
-        {% for resource in resources %}
-        <li>{{ resource.name }} - {{ resource.description }}</li>
-        {% empty %}
-        <li>No resources available.</li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-dark dark:text-light">📚 Доступні ресурси</h1>
+    <p class="lead text-dark dark:text-light">Інформаційні та корисні матеріали</p>
+  </div>
+
+  {% if resources %}
+    <div class="row g-4">
+      {% for resource in resources %}
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm border-0 bg-light text-dark dark:bg-dark dark:text-light">
+            <div class="card-body">
+              <h5 class="card-title">{{ resource.name }}</h5>
+              <p class="card-text">{{ resource.description }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-center text-dark dark:text-light fs-5">Наразі немає ресурсів 😔</p>
+  {% endif %}
+
+  <div class="text-center mt-5">
+    <a href="/" class="btn btn-primary">← Назад на головну</a>
+  </div>
+</div>
+{% endblock %}
