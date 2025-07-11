@@ -7,7 +7,19 @@ from .models import Room, Booking
 from .forms import RoomForm, RegisterForm, LoginForm, BookingForm
 from django import forms
 from .models import Resource
+from django.shortcuts import render
 
+KONAMI_CODE = ['UP', 'UP', 'DOWN', 'DOWN', 'LEFT', 'RIGHT', 'LEFT', 'RIGHT', 'B', 'A']
+
+def konami_view(request):
+    message = ''
+    if request.method == 'POST':
+        code_input = request.POST.get('code', '').upper().split()
+        if code_input == KONAMI_CODE:
+            message = 'Вітаємо! Ви ввели Konami Code! 🎉'
+        else:
+            message = 'Невірний код, спробуйте ще раз.'
+    return render(request, 'konami.html', {'message': message})
 
 def register_view(request):
     if request.method == 'POST':

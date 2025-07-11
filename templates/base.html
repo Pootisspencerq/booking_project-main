@@ -45,9 +45,54 @@
     a {
       text-decoration: none;
     }
+
+    #konamiOverlay {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+      padding: 20px;
+    }
+
+    #konamiOverlay iframe {
+      width: 560px;
+      height: 315px;
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 0 40px #ff0000;
+      margin-top: 20px;
+    }
+
+    #konamiOverlay img {
+      max-width: 90%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 0 30px #00ffff;
+    }
+
+    #konamiOverlay button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #konamiOverlay button:hover {
+      background-color: #a71d2a;
+    }
   </style>
 </head>
 <body>
+
   <nav class="navbar navbar-expand-lg border-bottom mb-4 adaptive-text">
     <div class="container">
       <a class="navbar-brand" href="/">Booking</a>
@@ -88,5 +133,70 @@
       document.body.classList.add(savedTheme === 'dark' ? 'dark-mode' : 'light-mode');
     };
   </script>
+
+  <div id="konamiOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+   <img src="{% static 'cool-pic.png' %}" alt="Cool Pic" style="max-width: 400px; height: auto;">
+
+    <iframe 
+      src="https://www.youtube.com/embed/p0RU3kraAf0?autoplay=1&controls=0&loop=1&playlist=p0RU3kraAf0" 
+      allow="autoplay; encrypted-media" 
+      allowfullscreen>
+    </iframe>
+    <button onclick="hideKonami()" aria-label="Закрити відео">Закрити</button>
+  </div>
+
+  <audio id="konamiSound" src="{% static 'konami.mp3' %}" preload="auto"></audio>
+
+  <script>
+    const overlay = document.getElementById('konamiOverlay');
+    const sound = document.getElementById('konamiSound');
+
+    const konamiSeq = [
+      'arrowup', 'arrowup',
+      'arrowdown', 'arrowdown',
+      'arrowleft', 'arrowright',
+      'arrowleft', 'arrowright'
+    ];
+
+    let pressedKeys = [];
+
+    function showKonami() {
+      overlay.style.display = 'flex';
+      overlay.setAttribute('aria-hidden', 'false');
+      sound.currentTime = 0;
+      sound.play();
+    }
+
+    function hideKonami() {
+      overlay.style.display = 'none';
+      overlay.setAttribute('aria-hidden', 'true');
+      const iframe = overlay.querySelector('iframe');
+      iframe.src = iframe.src;
+      sound.pause();
+      sound.currentTime = 0;
+    }
+
+    document.addEventListener('keydown', function(e) {
+      pressedKeys.push(e.key.toLowerCase());
+      if (pressedKeys.length > 10) pressedKeys.shift();
+
+      for (let i = 0; i < konamiSeq.length; i++) {
+        if (pressedKeys[i] !== konamiSeq[i]) return;
+      }
+
+      if (pressedKeys.length < 10) return;
+
+      const lastTwo = pressedKeys.slice(-2);
+
+      if (
+        (lastTwo[0] === 'b' && lastTwo[1] === 'a') ||
+        (lastTwo[0] === 'и' && lastTwo[1] === 'а')
+      ) {
+        showKonami();
+        pressedKeys = [];
+      }
+    });
+  </script>
+
 </body>
 </html>
