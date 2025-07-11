@@ -1,0 +1,45 @@
+body.dark-mode {
+  background-color: rgb(18, 18, 18);
+  color: white;
+}
+
+body.light-mode {
+  background-color: white;
+  color: black;
+}
+
+.dark-mode .adaptive-text {
+  color: white !important;
+}
+
+.light-mode .adaptive-text {
+  color: black !important;
+}
+
+.dark-mode .adaptive-card {
+  background-color: rgb(30, 30, 30) !important;
+  color: white !important;
+  border: 1px solid rgb(68, 68, 68) !important;
+}
+
+.light-mode .adaptive-card {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid rgb(204, 204, 204) !important;
+}
+
+.theme-toggle-btn {
+  z-index: 1050;
+}
+
+.dark-mode .btn-info {
+  background-color: rgb(58, 139, 187);
+  border-color: rgb(58, 139, 187);
+  color: white;
+}
+
+.light-mode .btn-info {
+  background-color: rgb(13, 110, 253);
+  border-color: rgb(13, 110, 253);
+  color: white;
+}

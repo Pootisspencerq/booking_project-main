@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block content %}
@@ -7,7 +6,7 @@
     <div class="row">
         {% for room in rooms %}
         <div class="col-md-4 mb-4">
-            <div class="card shadow-sm">
+            <div class="card adaptive-card shadow-sm">
                 {% if room.image %}
                     <img src="{{ room.image.url }}" class="card-img-top" alt="{{ room.title }}">
                 {% endif %}

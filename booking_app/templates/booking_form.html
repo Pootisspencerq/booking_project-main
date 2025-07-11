@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-lg p-4">
-                <h3 class="text-center mb-4">Забронювати кімнату</h3>
+                <h3 class="text-center mb-4">Форма бронювання</h3>
                 <form method="post" novalidate>
                     {% csrf_token %}
                     {% for field in form %}
@@ -13,11 +14,12 @@
                             {{ field.label_tag }}
                             {{ field }}
                             {% if field.errors %}
-                                <div class="text-danger">{{ field.errors }}</div>
+                                <div class="text-danger small">{{ field.errors }}</div>
                             {% endif %}
                         </div>
                     {% endfor %}
-                    <button type="submit" class="btn btn-primary w-100">Забронювати</button>
+                    <button type="submit" class="btn btn-success w-100">Забронювати</button>
+                    <a href="/" class="btn btn-outline-secondary w-100 mt-2">Назад на головну</a>
                 </form>
             </div>
         </div>
