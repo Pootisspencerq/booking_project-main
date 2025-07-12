@@ -1,10 +1,10 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="utf-8"/>
   <title>{% block title %}Booking{% endblock %}</title>
-  
+
   <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
@@ -22,8 +22,9 @@
     .dark-mode .card,
     .dark-mode .nav-link,
     .dark-mode .navbar,
-    .dark-mode .btn,
-    .dark-mode .form-control {
+    .dark-mode .form-control,
+    .dark-mode .btn-outline-light,
+    .dark-mode .btn-outline-secondary {
       background-color: #1e1e1e;
       color: #ffffff !important;
     }
@@ -32,10 +33,20 @@
     .light-mode .card,
     .light-mode .nav-link,
     .light-mode .navbar,
-    .light-mode .btn,
-    .light-mode .form-control {
+    .light-mode .form-control,
+    .light-mode .btn-outline-light,
+    .light-mode .btn-outline-secondary {
       background-color: #ffffff;
       color: #000000 !important;
+    }
+
+    .btn-success,
+    .btn-danger,
+    .btn-warning,
+    .btn-info,
+    .btn-primary {
+      background-color: inherit;
+      color: inherit;
     }
 
     .theme-toggle-btn {
@@ -83,7 +94,6 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
 
     #konamiOverlay button:hover {
@@ -93,110 +103,106 @@
 </head>
 <body>
 
-  <nav class="navbar navbar-expand-lg border-bottom mb-4 adaptive-text">
-    <div class="container">
-      <a class="navbar-brand" href="/">Booking</a>
-      <button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="/rooms/">Кімнати</a></li>
-          {% if user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="/logout/">Вийти</a></li>
-          {% else %}
-            <li class="nav-item"><a class="nav-link" href="/login/">Увійти</a></li>
-            <li class="nav-item"><a class="nav-link" href="/register/">Реєстрація</a></li>
-          {% endif %}
-        </ul>
-      </div>
+<nav class="navbar navbar-expand-lg border-bottom mb-4 adaptive-text">
+  <div class="container">
+    <a class="navbar-brand" href="/">Booking</a>
+    <button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/rooms/">Кімнати</a></li>
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="/logout/">Вийти</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="/login/">Увійти</a></li>
+          <li class="nav-item"><a class="nav-link" href="/register/">Реєстрація</a></li>
+        {% endif %}
+      </ul>
     </div>
-  </nav>
-
-  <div class="container adaptive-text">
-    {% block content %}{% endblock %}
   </div>
+</nav>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <button class="btn btn-outline-secondary theme-toggle-btn position-fixed bottom-0 end-0 m-3" onclick="toggleTheme()">🌓 Тема</button>
+<div class="container adaptive-text">
+  {% block content %}{% endblock %}
+</div>
 
-  <script>
-    function toggleTheme() {
-      const isDark = document.body.classList.contains('dark-mode');
-      document.body.classList.remove(isDark ? 'dark-mode' : 'light-mode');
-      document.body.classList.add(isDark ? 'light-mode' : 'dark-mode');
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<button class="btn btn-outline-secondary theme-toggle-btn position-fixed bottom-0 end-0 m-3" onclick="toggleTheme()">🌓 Тема</button>
+
+<script>
+  function toggleTheme() {
+    const isDark = document.body.classList.contains('dark-mode');
+    document.body.classList.remove(isDark ? 'dark-mode' : 'light-mode');
+    document.body.classList.add(isDark ? 'light-mode' : 'dark-mode');
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  }
+
+  window.onload = () => {
+    const savedTheme = localStorage.getItem('theme');
+    document.body.classList.add(savedTheme === 'dark' ? 'dark-mode' : 'light-mode');
+  };
+</script>
+
+<!-- Konami overlay -->
+<div id="konamiOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <img src="{% static 'cool-pic.png' %}" alt="Cool Pic" style="max-width: 400px;">
+  <iframe 
+    id="konamiVideo"
+    src="https://www.youtube.com/embed/RV0VJNvcBFU?autoplay=1&controls=1&loop=1&playlist=RV0VJNvcBFU"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+  </iframe>
+  <button onclick="hideKonami()" class="mt-2" aria-label="Закрити відео">✖️ Закрити</button>
+</div>
+
+<audio id="konamiSound" src="{% static 'konami.mp3' %}" preload="auto"></audio>
+
+<script>
+  const overlay = document.getElementById('konamiOverlay');
+  const sound = document.getElementById('konamiSound');
+  const iframe = document.getElementById('konamiVideo');
+
+  const konamiSeq = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright'];
+  let keys = [];
+
+  function showKonami() {
+    overlay.style.display = 'flex';
+    overlay.setAttribute('aria-hidden', 'false');
+    sound.currentTime = 0;
+    sound.play();
+
+    // Reset autoplay by reloading with autoplay=1
+    const src = iframe.src.replace(/autoplay=\d/, 'autoplay=1');
+    iframe.src = src;
+  }
+
+  function hideKonami() {
+    overlay.style.display = 'none';
+    overlay.setAttribute('aria-hidden', 'true');
+    sound.pause();
+    sound.currentTime = 0;
+
+    // Reset video and stop autoplay
+    const src = iframe.src.replace(/autoplay=\d/, 'autoplay=0');
+    iframe.src = src;
+  }
+
+  document.addEventListener('keydown', function (e) {
+    keys.push(e.key.toLowerCase());
+    if (keys.length > 10) keys.shift();
+
+    for (let i = 0; i < konamiSeq.length; i++) {
+      if (keys[i] !== konamiSeq[i]) return;
     }
 
-    window.onload = () => {
-      const savedTheme = localStorage.getItem('theme');
-      document.body.classList.add(savedTheme === 'dark' ? 'dark-mode' : 'light-mode');
-    };
-  </script>
-
-  <div id="konamiOverlay" role="dialog" aria-modal="true" aria-hidden="true">
-   <img src="{% static 'cool-pic.png' %}" alt="Cool Pic" style="max-width: 400px; height: auto;">
-
-    <iframe 
-      src="https://www.youtube.com/embed/p0RU3kraAf0?autoplay=1&controls=0&loop=1&playlist=p0RU3kraAf0" 
-      allow="autoplay; encrypted-media" 
-      allowfullscreen>
-    </iframe>
-    <button onclick="hideKonami()" aria-label="Закрити відео">Закрити</button>
-  </div>
-
-  <audio id="konamiSound" src="{% static 'konami.mp3' %}" preload="auto"></audio>
-
-  <script>
-    const overlay = document.getElementById('konamiOverlay');
-    const sound = document.getElementById('konamiSound');
-
-    const konamiSeq = [
-      'arrowup', 'arrowup',
-      'arrowdown', 'arrowdown',
-      'arrowleft', 'arrowright',
-      'arrowleft', 'arrowright'
-    ];
-
-    let pressedKeys = [];
-
-    function showKonami() {
-      overlay.style.display = 'flex';
-      overlay.setAttribute('aria-hidden', 'false');
-      sound.currentTime = 0;
-      sound.play();
+    const lastTwo = keys.slice(-2);
+    if ((lastTwo[0] === 'b' && lastTwo[1] === 'a') || (lastTwo[0] === 'и' && lastTwo[1] === 'а')) {
+      showKonami();
+      keys = [];
     }
-
-    function hideKonami() {
-      overlay.style.display = 'none';
-      overlay.setAttribute('aria-hidden', 'true');
-      const iframe = overlay.querySelector('iframe');
-      iframe.src = iframe.src;
-      sound.pause();
-      sound.currentTime = 0;
-    }
-
-    document.addEventListener('keydown', function(e) {
-      pressedKeys.push(e.key.toLowerCase());
-      if (pressedKeys.length > 10) pressedKeys.shift();
-
-      for (let i = 0; i < konamiSeq.length; i++) {
-        if (pressedKeys[i] !== konamiSeq[i]) return;
-      }
-
-      if (pressedKeys.length < 10) return;
-
-      const lastTwo = pressedKeys.slice(-2);
-
-      if (
-        (lastTwo[0] === 'b' && lastTwo[1] === 'a') ||
-        (lastTwo[0] === 'и' && lastTwo[1] === 'а')
-      ) {
-        showKonami();
-        pressedKeys = [];
-      }
-    });
-  </script>
+  });
+</script>
 
 </body>
 </html>
