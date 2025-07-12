@@ -22,9 +22,7 @@
     .dark-mode .card,
     .dark-mode .nav-link,
     .dark-mode .navbar,
-    .dark-mode .form-control,
-    .dark-mode .btn-outline-light,
-    .dark-mode .btn-outline-secondary {
+    .dark-mode .form-control {
       background-color: #1e1e1e;
       color: #ffffff !important;
     }
@@ -33,20 +31,9 @@
     .light-mode .card,
     .light-mode .nav-link,
     .light-mode .navbar,
-    .light-mode .form-control,
-    .light-mode .btn-outline-light,
-    .light-mode .btn-outline-secondary {
+    .light-mode .form-control {
       background-color: #ffffff;
       color: #000000 !important;
-    }
-
-    .btn-success,
-    .btn-danger,
-    .btn-warning,
-    .btn-info,
-    .btn-primary {
-      background-color: inherit;
-      color: inherit;
     }
 
     .theme-toggle-btn {
@@ -70,7 +57,8 @@
     }
 
     #konamiOverlay iframe {
-      width: 560px;
+      width: 100%;
+      max-width: 560px;
       height: 315px;
       border: none;
       border-radius: 15px;
@@ -79,17 +67,19 @@
     }
 
     #konamiOverlay img {
-      max-width: 90%;
+      width: 100%;
+      max-width: 360px;
       height: auto;
       border-radius: 12px;
       box-shadow: 0 0 30px #00ffff;
+      margin-bottom: 20px;
     }
 
     #konamiOverlay button {
       margin-top: 20px;
       padding: 10px 20px;
       font-size: 1.2rem;
-      background: #dc3545;
+      background: #28a745;
       color: white;
       border: none;
       border-radius: 8px;
@@ -97,7 +87,7 @@
     }
 
     #konamiOverlay button:hover {
-      background-color: #a71d2a;
+      background-color: #1f7a34;
     }
   </style>
 </head>
@@ -144,62 +134,51 @@
   };
 </script>
 
-<!-- Konami overlay -->
+<!-- Konami Overlay -->
 <div id="konamiOverlay" role="dialog" aria-modal="true" aria-hidden="true">
-  <img src="{% static 'cool-pic.png' %}" alt="Cool Pic" style="max-width: 400px;">
-  <iframe 
+  <img src="{% static 'cool-pic.png' %}" alt="Cool Pic">
+  <iframe
     id="konamiVideo"
-    src="https://www.youtube.com/embed/RV0VJNvcBFU?autoplay=1&controls=1&loop=1&playlist=RV0VJNvcBFU"
+    src=""
     allow="autoplay; encrypted-media"
     allowfullscreen>
   </iframe>
   <button onclick="hideKonami()" class="mt-2" aria-label="Закрити відео">✖️ Закрити</button>
 </div>
 
-<audio id="konamiSound" src="{% static 'konami.mp3' %}" preload="auto"></audio>
-
 <script>
   const overlay = document.getElementById('konamiOverlay');
-  const sound = document.getElementById('konamiSound');
   const iframe = document.getElementById('konamiVideo');
 
-  const konamiSeq = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright'];
-  let keys = [];
+  const konamiCode = [
+    'ArrowUp', 'ArrowUp',
+    'ArrowDown', 'ArrowDown',
+    'ArrowLeft', 'ArrowRight',
+    'ArrowLeft', 'ArrowRight',
+    'KeyB', 'KeyA'
+  ];
+
+  let buffer = [];
 
   function showKonami() {
     overlay.style.display = 'flex';
     overlay.setAttribute('aria-hidden', 'false');
-    sound.currentTime = 0;
-    sound.play();
-
-    // Reset autoplay by reloading with autoplay=1
-    const src = iframe.src.replace(/autoplay=\d/, 'autoplay=1');
-    iframe.src = src;
+    iframe.src = "https://www.youtube.com/embed/RV0VJNvcBFU?autoplay=1&controls=1&loop=1&playlist=RV0VJNvcBFU";
   }
 
   function hideKonami() {
     overlay.style.display = 'none';
     overlay.setAttribute('aria-hidden', 'true');
-    sound.pause();
-    sound.currentTime = 0;
-
-    // Reset video and stop autoplay
-    const src = iframe.src.replace(/autoplay=\d/, 'autoplay=0');
-    iframe.src = src;
+    iframe.src = "";
   }
 
-  document.addEventListener('keydown', function (e) {
-    keys.push(e.key.toLowerCase());
-    if (keys.length > 10) keys.shift();
+  document.addEventListener('keydown', (e) => {
+    buffer.push(e.code);
+    if (buffer.length > konamiCode.length) buffer.shift();
 
-    for (let i = 0; i < konamiSeq.length; i++) {
-      if (keys[i] !== konamiSeq[i]) return;
-    }
-
-    const lastTwo = keys.slice(-2);
-    if ((lastTwo[0] === 'b' && lastTwo[1] === 'a') || (lastTwo[0] === 'и' && lastTwo[1] === 'а')) {
+    if (JSON.stringify(buffer) === JSON.stringify(konamiCode)) {
       showKonami();
-      keys = [];
+      buffer = [];
     }
   });
 </script>
